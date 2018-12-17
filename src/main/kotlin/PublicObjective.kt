@@ -5,39 +5,29 @@ sealed class PublicObjective {
     abstract val name: String
     protected abstract fun count(window: Window): Int
     fun solve(window: Window): Int = count(window) * points
-
-    protected fun fold(rows: List<List<Die>>, faceAccessor: KProperty1<Die, Face>? = null, colorAccessor: KProperty1<Die, Color>? = null): Int {
-        assert(faceAccessor != null || colorAccessor != null)
-
-        return rows.fold(0) { acc, dice ->
-            val set = dice.map { faceAccessor?.invoke(it) ?: colorAccessor?.invoke(it) }.toSet()
-            if (set.size == dice.size) acc + 1 else acc
-        }
-    }
-
-    protected class Counter<T> {
-        fun count(rows: List<List<Die>>, accessorFn: (Die) -> T): Int {
-            return rows.fold(0) {acc, dice ->
-                val set = dice.map { accessorFn(it) }.toSet()
-                if (set.size == dice.size) acc + 1 else acc
-            }
-        }
-    }
 }
 
-class RowShadeVariety : PublicObjective() {
-    override val name: String = "Row Shade Variety"
+
+abstract class RowVariety<T>(override val accessFn: (Die) -> T) : Counter<T>({ w -> w.rows() }) {
     override val points: Int = 5
-
-    override fun count(window: Window) = Counter<Face>().count(window.rows(), Die::faceValue)
 }
-
-class ColumnShadeVariety : PublicObjective() {
-    override val name: String = "Column Shade Variety"
+abstract class ColumnVariety<T>(override val accessFn: (Die) -> T) : Counter<T>({ w -> w.columns() }) {
     override val points: Int = 4
-
-    override fun count(window: Window) = Counter<Face>().count(window.columns(), Die::faceValue)
 }
+
+abstract class Counter<T>(private val windowFn: (Window) -> List<List<Die>>) : PublicObjective() {
+    protected abstract val accessFn: (Die) -> T
+    override fun count(window: Window): Int =
+            windowFn(window).count {
+                it.map { accessFn(it) }.toSet().size == it.size
+            }
+}
+
+class RowShadeVariety(override val name: String = "Row Shade Variety") : RowVariety<Face>(Die::faceValue)
+class RowColorVariety(override val name: String = "Row Color Variety") : RowVariety<Color>(Die::color)
+class ColumnShadeVariety(override val name: String = "Column Shade Variety") : ColumnVariety<Face>(Die::faceValue)
+class ColumnColorVariety(override val name: String = "Column Color Variety") : ColumnVariety<Color>(Die::color)
+
 
 abstract class ShadePair(private val match: List<Face>): PublicObjective() {
     override val points: Int = 2

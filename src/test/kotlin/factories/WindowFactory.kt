@@ -4,7 +4,6 @@ import Die
 import Color
 import Face
 import Window
-import io.kotlintest.matchers.numerics.shouldBeOdd
 
 object WindowFactory {
     fun withUniqueValueRows(uniqueNumber: Int): Window {
@@ -28,7 +27,7 @@ object WindowFactory {
     }
 
     fun withUniqueValueColumns(uniqueNumber: Int): Window {
-        assert(uniqueNumber <= 4)
+        assert(uniqueNumber <= 5)
 
         val dice = MutableList(4) { mutableListOf<Die>() }
 
@@ -60,7 +59,7 @@ object WindowFactory {
 
         for (y in 0..4) {
             for (x in 0..3) {
-                dice[x][y] = if (insertedCount > count) {
+                dice[x][y] = if (insertedCount == count * 2) {
                     DiceFactory.notOfFaces(faceOne, faceTwo)
                 } else {
                     when (insertedCount % 2) {
