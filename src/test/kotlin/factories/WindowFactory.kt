@@ -52,6 +52,32 @@ object WindowFactory {
         return Window(dice)
     }
 
+    fun withUniqueColorColumns(uniqueNumber: Int): Window {
+        assert(uniqueNumber <= 5)
+
+        val dice = MutableList(4) { mutableListOf<Die>() }
+
+        for (y in 0 until uniqueNumber) {
+            val uniqueRow = DiceFactory.makeUniqueColorRow()
+
+            for (x in 0..3) {
+                val current = dice[x]
+                current += uniqueRow[x]
+            }
+        }
+
+        for (y in uniqueNumber until 5) {
+            val sameRow = DiceFactory.makeRepeatedColorRow()
+
+            for (x in 0..3) {
+                val current = dice[x]
+                current += sameRow[x]
+            }
+        }
+
+        return Window(dice)
+    }
+
     fun withPairs(faceOne: Face, faceTwo: Face, count: Int): Window {
         assert(count < 11)
         val dice = List(4) { DiceFactory.makeUniqueColorRow() }.map { it.toMutableList() }
@@ -72,6 +98,52 @@ object WindowFactory {
                             Die(DiceFactory.getRandomColor(), faceTwo)
                         }
                     }
+                }
+            }
+        }
+
+        return Window(dice)
+    }
+
+    fun withColorSets(count: Int): Window {
+        assert(count < 5)
+
+        val dice = List(4) { DiceFactory.makeUniqueColorRow() }.map { it.toMutableList() }
+        val colors = Color.values()
+        var insertedCount = 0
+        var colorIndex = -1
+
+        for (y in 0..4) {
+            for (x in 0..3) {
+                dice[x][y] = if (insertedCount == count * 5) {
+                    Die(Color.BLUE, DiceFactory.getRandomFace())
+                } else {
+                    colorIndex += 1
+                    insertedCount += 1
+                    Die(colors[colorIndex % colors.size], DiceFactory.getRandomFace())
+                }
+            }
+        }
+
+        return Window(dice)
+    }
+
+    fun withValueSets(count: Int): Window {
+        assert(count < 4)
+
+        val dice = List(4) { DiceFactory.makeUniqueColorRow() }.map { it.toMutableList() }
+        val values = Face.values()
+        var insertedCount = 0
+        var valueIndex = -1
+
+        for (y in 0..4) {
+            for (x in 0..3) {
+                dice[x][y] = if (insertedCount == count * 6) {
+                    Die(DiceFactory.getRandomColor(), Face.ONE)
+                } else {
+                    valueIndex += 1
+                    insertedCount += 1
+                    Die(DiceFactory.getRandomColor(), values[valueIndex % values.size])
                 }
             }
         }

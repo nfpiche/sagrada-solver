@@ -33,6 +33,35 @@ class RowShadeVarietyTest : StringSpec({
     }
 })
 
+class ColumnColorVarietyTest : StringSpec({
+    "#solve should return proper score based on number of matches" {
+        forall(
+                row(WindowFactory.withUniqueColorColumns(0), 0),
+                row(WindowFactory.withUniqueColorColumns(1), 4),
+                row(WindowFactory.withUniqueColorColumns(2), 8),
+                row(WindowFactory.withUniqueColorColumns(3), 12),
+                row(WindowFactory.withUniqueColorColumns(4), 16),
+                row(WindowFactory.withUniqueColorColumns(5), 20)
+        ) { window, score ->
+            ColumnColorVariety().solve(window) shouldBe score
+        }
+    }
+})
+
+class RowColorVarietyTest : StringSpec({
+    "#solve should return proper score based on number of matches" {
+        forall(
+                row(WindowFactory.withUniqueColorRows(0), 0),
+                row(WindowFactory.withUniqueColorRows(1), 5),
+                row(WindowFactory.withUniqueColorRows(2), 10),
+                row(WindowFactory.withUniqueColorRows(3), 15),
+                row(WindowFactory.withUniqueColorRows(4), 20)
+        ) { window, score ->
+            RowColorVariety().solve(window) shouldBe score
+        }
+    }
+})
+
 class LightShadesTest : StringSpec({
     "#solve should return proper score pairs of 1 + 2" {
         forall(
@@ -89,6 +118,31 @@ class DeepShadesTest : StringSpec({
                 row(WindowFactory.withPairs(Face.FIVE, Face.SIX, 10), 20)
         ) { window, score ->
             DeepShades().solve(window) shouldBe score
+        }
+    }
+})
+
+class ColorVarietyTest : StringSpec({
+    "#solve should return proper score for complete sets of colors" {
+        forall(
+                row(WindowFactory.withColorSets(0), 0),
+                row(WindowFactory.withColorSets(1), 4),
+                row(WindowFactory.withColorSets(2), 8),
+                row(WindowFactory.withColorSets(3), 12)
+        ) { window, score ->
+            ColorVariety().solve(window) shouldBe score
+        }
+    }
+})
+
+class ShadeVarietyTest : StringSpec({
+    "#solve should return proper score for complete sets of values" {
+        forall(
+                row(WindowFactory.withValueSets(0), 0),
+                row(WindowFactory.withValueSets(1), 5),
+                row(WindowFactory.withValueSets(2), 10)
+        ) { window, score ->
+            ShadeVariety().solve(window) shouldBe score
         }
     }
 })

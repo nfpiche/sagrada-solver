@@ -1,5 +1,3 @@
-import kotlin.reflect.KProperty1
-
 sealed class PublicObjective {
     abstract val points: Int
     abstract val name: String
@@ -7,10 +5,26 @@ sealed class PublicObjective {
     fun solve(window: Window): Int = count(window) * points
 }
 
+abstract class WindowVariety<T>(private val windowFn: (Window) -> Map<T, Int>, private val checkSize: Int) : PublicObjective() {
+    protected abstract val match: List<T>
+
+    override fun count(window: Window): Int {
+        val matches = windowFn(window).filter {
+            match.contains(it.key)
+        }
+
+        return if (matches.size == checkSize) {
+            matches.minBy { it.value }?.value ?: 0
+        } else {
+            0
+        }
+    }
+}
 
 abstract class RowVariety<T>(override val accessFn: (Die) -> T) : Counter<T>({ w -> w.rows() }) {
     override val points: Int = 5
 }
+
 abstract class ColumnVariety<T>(override val accessFn: (Die) -> T) : Counter<T>({ w -> w.columns() }) {
     override val points: Int = 4
 }
@@ -28,20 +42,8 @@ class RowColorVariety(override val name: String = "Row Color Variety") : RowVari
 class ColumnShadeVariety(override val name: String = "Column Shade Variety") : ColumnVariety<Face>(Die::faceValue)
 class ColumnColorVariety(override val name: String = "Column Color Variety") : ColumnVariety<Color>(Die::color)
 
-
-abstract class ShadePair(private val match: List<Face>): PublicObjective() {
+abstract class ShadePair(override val match: List<Face>): WindowVariety<Face>({ w -> w.groupByValue() }, 2){
     override val points: Int = 2
-    override fun count(window: Window): Int {
-       val matches = window.groupByValue().filter {
-           match.contains(it.key)
-       }
-
-        return when (matches.size) {
-            0 -> 0
-            1 -> 0
-            else -> matches.minBy { it.value }?.value ?: 0
-        }
-    }
 }
 
 class LightShades : ShadePair(match = listOf(Face.ONE, Face.TWO)) {
@@ -54,4 +56,16 @@ class MediumShades : ShadePair(match = listOf(Face.THREE, Face.FOUR)) {
 
 class DeepShades : ShadePair(match = listOf(Face.FIVE, Face.SIX)) {
     override val name: String = "Deep Shades"
+}
+
+class ColorVariety : WindowVariety<Color>({ w -> w.groupByColor() }, 5) {
+    override val name: String = "Color Variety"
+    override val points: Int = 4
+    override val match: List<Color> = Color.values().toList()
+}
+
+class ShadeVariety : WindowVariety<Face>({ w -> w.groupByValue() }, 6) {
+    override val name: String = "Shade Variety"
+    override val points: Int = 5
+    override val match: List<Face> = Face.values().toList()
 }
