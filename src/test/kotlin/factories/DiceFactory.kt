@@ -1,3 +1,9 @@
+package factories
+
+import Color
+import Die
+import Face
+
 object DiceFactory {
     fun makeUniqueValueRow(): List<Die> {
         val values = mutableSetOf<Face>()
@@ -29,12 +35,12 @@ object DiceFactory {
 
     fun makeRepeatedValueRow(): List<Die> {
         val face = getRandomFace()
-        return List(5) { Die(getRandomColor(), face)}
+        return List(5) { Die(getRandomColor(), face) }
     }
 
     fun makeRepeatedColorRow(): List<Die> {
         val color = getRandomColor()
-        return List(5) { Die(color, getRandomFace())}
+        return List(5) { Die(color, getRandomFace()) }
     }
 
     fun getRandomColor(): Color = Color.values().toList().shuffled().first()

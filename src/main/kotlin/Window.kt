@@ -18,4 +18,20 @@ class Window(private val dice: List<List<Die>>) {
 
         return cols.map { it.toList() }
     }
+
+    fun groupByValue(): Map<Face, Int> = Grouper<Face>().group(dice, Die::faceValue)
+    fun groupByColor(): Map<Color, Int> = Grouper<Color>().group(dice, Die::color)
+
+    private class Grouper<T> {
+        fun group(dice: List<List<Die>>, accessFn: (Die) -> T): Map<T, Int> {
+            return dice.fold(HashMap<T, Int>().withDefault { 0 }) { acc, it ->
+                val grouped = it.groupBy { accessFn(it) }
+                grouped.entries.forEach {
+                    acc.computeIfPresent(it.key) { _, v -> v + it.value.size }
+                    acc.computeIfAbsent(it.key) { _ -> it.value.size }
+                }
+                acc
+            }.toMap()
+        }
+    }
 }

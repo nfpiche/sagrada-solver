@@ -1,3 +1,8 @@
+package factories
+
+import Die
+import Window
+
 object WindowFactory {
     fun withUniqueValueRows(uniqueNumber: Int): Window {
         assert(uniqueNumber < 5)
