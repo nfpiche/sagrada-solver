@@ -14,18 +14,27 @@ sealed class PublicObjective {
             if (set.size == dice.size) acc + 1 else acc
         }
     }
+
+    protected class Counter<T> {
+        fun count(rows: List<List<Die>>, accessorFn: (Die) -> T): Int {
+            return rows.fold(0) {acc, dice ->
+                val set = dice.map { accessorFn(it) }.toSet()
+                if (set.size == dice.size) acc + 1 else acc
+            }
+        }
+    }
 }
 
 class RowShadeVariety : PublicObjective() {
     override val name: String = "Row Shade Variety"
     override val points: Int = 5
 
-    override fun count(window: Window) = fold(window.rows(), faceAccessor = Die::faceValue)
+    override fun count(window: Window) = Counter<Face>().count(window.rows(), Die::faceValue)
 }
 
 class ColumnShadeVariety : PublicObjective() {
     override val name: String = "Column Shade Variety"
     override val points: Int = 4
 
-    override fun count(window: Window) = fold(window.columns(), faceAccessor = Die::faceValue)
+    override fun count(window: Window) = Counter<Face>().count(window.columns(), Die::faceValue)
 }

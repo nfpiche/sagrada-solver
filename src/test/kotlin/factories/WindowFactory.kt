@@ -25,24 +25,24 @@ object WindowFactory {
     }
 
     fun withUniqueValueColumns(uniqueNumber: Int): Window {
-        assert(uniqueNumber < 6)
+        assert(uniqueNumber <= 4)
 
         val dice = MutableList(4) { mutableListOf<Die>() }
 
         for (y in 0 until uniqueNumber) {
             val uniqueRow = DiceFactory.makeUniqueValueRow()
 
-            for (x in 0 until 4) {
+            for (x in 0..3) {
                 val current = dice[x]
                 current += uniqueRow[x]
             }
         }
 
-        for (y in 0 until 4) {
+        for (y in uniqueNumber until 5) {
             val sameRow = DiceFactory.makeRepeatedValueRow()
 
-            for (x in uniqueNumber until 5) {
-                val current = dice[y]
+            for (x in 0..3) {
+                val current = dice[x]
                 current += sameRow[x]
             }
         }
