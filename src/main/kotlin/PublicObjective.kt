@@ -38,3 +38,30 @@ class ColumnShadeVariety : PublicObjective() {
 
     override fun count(window: Window) = Counter<Face>().count(window.columns(), Die::faceValue)
 }
+
+abstract class ShadePair(private val match: List<Face>): PublicObjective() {
+    override val points: Int = 2
+    override fun count(window: Window): Int {
+       val matches = window.groupByValue().filter {
+           match.contains(it.key)
+       }
+
+        return when (matches.size) {
+            0 -> 0
+            1 -> 0
+            else -> matches.minBy { it.value }?.value ?: 0
+        }
+    }
+}
+
+class LightShades : ShadePair(match = listOf(Face.ONE, Face.TWO)) {
+    override val name: String = "Light Shades"
+}
+
+class MediumShades : ShadePair(match = listOf(Face.THREE, Face.FOUR)) {
+    override val name: String = "Medium Shades"
+}
+
+class DeepShades : ShadePair(match = listOf(Face.FIVE, Face.SIX)) {
+    override val name: String = "Deep Shades"
+}

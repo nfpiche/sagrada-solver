@@ -43,6 +43,16 @@ object DiceFactory {
         return List(5) { Die(color, getRandomFace()) }
     }
 
+    fun notOfFaces(vararg not: Face): Die {
+        var face = getRandomFace()
+
+        while (not.contains(face)) {
+            face = getRandomFace()
+        }
+
+        return Die(getRandomColor(), face)
+    }
+
     fun getRandomColor(): Color = Color.values().toList().shuffled().first()
     fun getRandomFace(): Face = Face.values().toList().shuffled().first()
 }
