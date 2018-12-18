@@ -61,4 +61,20 @@ class WindowTest : StringSpec({
 
         knownWindow.groupByColor() shouldBe expected
     }
+
+    "#valuesForColor sums up faces values of dice for specified color" {
+        val dice = listOf(
+                listOf(Die(Color.BLUE, Face.ONE), Die(Color.BLUE, Face.TWO), Die(Color.BLUE, Face.THREE), Die(Color.BLUE, Face.FOUR), Die(Color.BLUE, Face.FIVE)),
+                listOf(Die(Color.YELLOW, Face.ONE), Die(Color.YELLOW, Face.TWO), Die(Color.YELLOW, Face.THREE), Die(Color.YELLOW, Face.FOUR), Die(Color.YELLOW, Face.FIVE)),
+                listOf(Die(Color.RED, Face.ONE), Die(Color.RED, Face.TWO), Die(Color.RED, Face.THREE), Die(Color.RED, Face.FOUR), Die(Color.RED, Face.FIVE)),
+                listOf(Die(Color.GREEN, Face.ONE), Die(Color.GREEN, Face.TWO), Die(Color.GREEN, Face.THREE), Die(Color.GREEN, Face.FOUR), Die(Color.GREEN, Face.FIVE))
+        )
+        val window = Window(dice)
+
+        window.valuesForColor(Color.BLUE) shouldBe 15
+        window.valuesForColor(Color.YELLOW) shouldBe 15
+        window.valuesForColor(Color.RED) shouldBe 15
+        window.valuesForColor(Color.GREEN) shouldBe 15
+        window.valuesForColor(Color.PURPLE) shouldBe 0
+    }
 })

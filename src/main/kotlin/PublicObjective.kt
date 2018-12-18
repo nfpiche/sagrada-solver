@@ -46,17 +46,9 @@ abstract class ShadePair(override val match: List<Face>): WindowVariety<Face>({ 
     override val points: Int = 2
 }
 
-class LightShades : ShadePair(match = listOf(Face.ONE, Face.TWO)) {
-    override val name: String = "Light Shades"
-}
-
-class MediumShades : ShadePair(match = listOf(Face.THREE, Face.FOUR)) {
-    override val name: String = "Medium Shades"
-}
-
-class DeepShades : ShadePair(match = listOf(Face.FIVE, Face.SIX)) {
-    override val name: String = "Deep Shades"
-}
+class LightShades(override val name: String = "Light Shades") : ShadePair(listOf(Face.ONE, Face.TWO))
+class MediumShades(override val name: String = "Medium Shades") : ShadePair(listOf(Face.THREE, Face.FOUR))
+class DeepShades(override  val name: String = "Deep Shades") : ShadePair(listOf(Face.FIVE, Face.SIX))
 
 class ColorVariety : WindowVariety<Color>({ w -> w.groupByColor() }, 5) {
     override val name: String = "Color Variety"
@@ -68,4 +60,24 @@ class ShadeVariety : WindowVariety<Face>({ w -> w.groupByValue() }, 6) {
     override val name: String = "Shade Variety"
     override val points: Int = 5
     override val match: List<Face> = Face.values().toList()
+}
+
+class ColorDiagonals : PublicObjective() {
+    override val name: String = "Color Diagonals"
+    override val points: Int = 1
+    override fun count(window: Window): Int {
+        val counts = mutableMapOf<Color, MutableSet<Pair<Int, Int>>>()
+        val rows = window.rows()
+        for (y in 0..3) {
+            for (x in 0..4) {
+                val die = rows[y][x]
+                counts.getOrPut(die.color) { mutableSetOf() }.plus(x to y)
+                window.neighborsFor(x, y, die.color).forEach { counts.getOrPut(it.die.color) { mutableSetOf() }.add(it.position)}
+            }
+        }
+
+        return counts.values.fold(0) { acc, positions ->
+            if (positions.size > 1) acc + positions.size else acc
+        }
+    }
 }

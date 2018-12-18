@@ -146,3 +146,41 @@ class ShadeVarietyTest : StringSpec({
         }
     }
 })
+
+class ColorDiagonalsTest : StringSpec({
+    "#solve should return 20 when every diagonal neighbor is same color" {
+        val dice = listOf(
+                listOf(Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE)),
+                listOf(Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE)),
+                listOf(Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE)),
+                listOf(Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE))
+        )
+        val window = Window(dice)
+
+        ColorDiagonals().solve(window) shouldBe 20
+    }
+
+    "#solve should return 0 when no diagonal neighbors are same color" {
+        val dice = listOf(
+                listOf(Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE)),
+                listOf(Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE)),
+                listOf(Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE)),
+                listOf(Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE))
+        )
+        val window = Window(dice)
+
+        ColorDiagonals().solve(window) shouldBe 0
+    }
+
+    "#solve should return 2 when exactly one set of diagonal neighbors are same color" {
+        val dice = listOf(
+                listOf(Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.YELLOW, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE)),
+                listOf(Die(Color.BLUE, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE)),
+                listOf(Die(Color.YELLOW, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.YELLOW, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE)),
+                listOf(Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE))
+        )
+        val window = Window(dice)
+
+        ColorDiagonals().solve(window) shouldBe 2
+    }
+})
