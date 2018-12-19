@@ -69,12 +69,12 @@ class WindowTest : StringSpec({
                 listOf(Die(Color.RED, Face.ONE), Die(Color.RED, Face.TWO), Die(Color.RED, Face.THREE), Die(Color.RED, Face.FOUR), Die(Color.RED, Face.FIVE)),
                 listOf(Die(Color.GREEN, Face.ONE), Die(Color.GREEN, Face.TWO), Die(Color.GREEN, Face.THREE), Die(Color.GREEN, Face.FOUR), Die(Color.GREEN, Face.FIVE))
         )
-        val window = Window(dice)
+        val valueWindow = Window(dice)
 
-        window.valuesForColor(Color.BLUE) shouldBe 15
-        window.valuesForColor(Color.YELLOW) shouldBe 15
-        window.valuesForColor(Color.RED) shouldBe 15
-        window.valuesForColor(Color.GREEN) shouldBe 15
-        window.valuesForColor(Color.PURPLE) shouldBe 0
+        valueWindow.valuesForColor(Color.BLUE) shouldBe 15
+        valueWindow.valuesForColor(Color.YELLOW) shouldBe 15
+        valueWindow.valuesForColor(Color.RED) shouldBe 15
+        valueWindow.valuesForColor(Color.GREEN) shouldBe 15
+        valueWindow.valuesForColor(Color.PURPLE) shouldBe 0
     }
 })
