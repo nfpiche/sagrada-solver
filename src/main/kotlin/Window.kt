@@ -37,6 +37,13 @@ class Window(private val dice: List<List<Die>>) {
         }
     }
 
+    fun display(): Unit {
+        for (row in dice) {
+            println(row.map { it.toString() }.joinToString(" "))
+            println()
+        }
+    }
+
     private class Grouper<T> {
         fun group(dice: List<List<Die>>, accessFn: (Die) -> T): Map<T, Int> {
             return dice.fold(HashMap<T, Int>().withDefault { 0 }) { acc, it ->
