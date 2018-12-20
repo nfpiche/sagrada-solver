@@ -21,7 +21,9 @@ class Window(private val dice: List<List<Die>>) {
 
     fun groupByValue(): Map<Face, Int> = Grouper<Face>().group(dice, Die::faceValue)
     fun groupByColor(): Map<Color, Int> = Grouper<Color>().group(dice, Die::color)
-    fun valuesForColor(color: Color): Int = dice.map { it.filter { it.color == color } }.flatten().sumBy { it.faceValue.value }
+    fun valuesForColor(color: Color): Int = dice.flatten().sumBy {
+        if (it.color == color) it.faceValue.value else 0
+    }
 
     fun neighborsFor(x: Int, y: Int, color: Color): List<Neighbor> {
         return listOf(-1 to -1, -1 to 1, 1 to -1, 1 to 1).fold(mutableListOf()) { acc: List<Neighbor>, pair ->
@@ -37,24 +39,20 @@ class Window(private val dice: List<List<Die>>) {
         }
     }
 
-    fun display(): Unit {
-        for (row in dice) {
-            println(row.map { it.toString() }.joinToString(" "))
-            println()
+    fun display() = println(toString())
+
+    override fun toString(): String =
+        with(StringBuilder()) {
+            for (row in dice) {
+                append(row.joinToString(" ", transform = Die::toString))
+                append('\n')
+            }
+            toString()
         }
-    }
 
     private class Grouper<T> {
-        fun group(dice: List<List<Die>>, accessFn: (Die) -> T): Map<T, Int> {
-            return dice.fold(HashMap<T, Int>().withDefault { 0 }) { acc, it ->
-                val grouped = it.groupBy { accessFn(it) }
-                grouped.entries.forEach {
-                    acc.computeIfPresent(it.key) { _, v -> v + it.value.size }
-                    acc.computeIfAbsent(it.key) { _ -> it.value.size }
-                }
-                acc
-            }.toMap()
-        }
+        fun group(dice: List<List<Die>>, accessFn: (Die) -> T): Map<T, Int> =
+            dice.flatten().groupBy(accessFn).mapValues { it.value.size }
     }
 }
 
