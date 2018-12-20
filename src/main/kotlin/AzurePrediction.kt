@@ -14,10 +14,15 @@ data class AzurePrediction(
         val predictions: List<Prediction>
 ) {
     fun highPredictions(): List<Prediction> = predictions.sortedByDescending { it.probability }.take(20)
-    fun toWindow(): Window {
+    fun toWindow(colors: DiceColor): Window {
         val dice = highPredictions().sortedBy { it.boundingBox.top }
                 .chunked(5).map { it.sortedBy { it.boundingBox.left } }
-                .map { it.map { Die(Color.BLUE, it.tagName) } }
+                .zip(colors.toColors())
+                .map { pair ->
+                    pair.first.mapIndexed { index, prediction ->
+                        Die(pair.second[index], prediction.tagName)
+                    }
+                }
 
         return Window(dice)
     }
