@@ -1,7 +1,6 @@
 fun main(args: Array<String>) {
     val filePath = "/Users/nate-piche/dice-test.jpg"
-    val azurePrediction = AzureClient.getPredictions(filePath)
-    val diceColor = DiceClient.getDice(filePath)
-    val window = azurePrediction.toWindow(diceColor)
+    val dice = DiceClient.getDice(filePath)
+    val window = Window(dice.forWindow())
     window.display()
 }

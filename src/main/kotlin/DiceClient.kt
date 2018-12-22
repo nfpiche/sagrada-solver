@@ -11,12 +11,12 @@ object DiceClient {
 
     private val mediaType: MediaType = MediaType.parse("multipart/form-data")!!
 
-    fun getDice(filePath: String): DiceColor {
+    fun getDice(filePath: String): Dice {
         val reqBody = makeBody(filePath)
         val req = makeRequest(reqBody)
         val res = cli.newCall(req).execute()
 
-        return DiceColorBuilder.build(res.body()!!.string())!!
+        return DiceBuilder.build(res.body()!!.string())!!
     }
 
     private fun makeBody(filePath: String): MultipartBody =
