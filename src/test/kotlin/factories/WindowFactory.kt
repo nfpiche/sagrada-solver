@@ -13,7 +13,7 @@ object WindowFactory {
         val uniqueRows = List(uniqueNumber) { DiceFactory.makeUniqueValueRow() }
         val repeatedRows = List(repeatedNumber) { DiceFactory.makeRepeatedValueRow() }
 
-        return Window(uniqueRows + repeatedRows)
+        return Window(uniqueRows + repeatedRows, DiceFactory.getRandomColor())
     }
 
     fun withUniqueColorRows(uniqueNumber: Int): Window {
@@ -23,7 +23,7 @@ object WindowFactory {
         val uniqueRows = List(uniqueNumber) { DiceFactory.makeUniqueColorRow() }
         val repeatedRows = List(repeatedNumber) { DiceFactory.makeRepeatedColorRow() }
 
-        return Window(uniqueRows + repeatedRows)
+        return Window(uniqueRows + repeatedRows, DiceFactory.getRandomColor())
     }
 
     fun withUniqueValueColumns(uniqueNumber: Int): Window {
@@ -49,7 +49,7 @@ object WindowFactory {
             }
         }
 
-        return Window(dice)
+        return Window(dice, DiceFactory.getRandomColor())
     }
 
     fun withUniqueColorColumns(uniqueNumber: Int): Window {
@@ -75,7 +75,7 @@ object WindowFactory {
             }
         }
 
-        return Window(dice)
+        return Window(dice, DiceFactory.getRandomColor())
     }
 
     fun withPairs(faceOne: Face, faceTwo: Face, count: Int): Window {
@@ -102,7 +102,7 @@ object WindowFactory {
             }
         }
 
-        return Window(dice)
+        return Window(dice, DiceFactory.getRandomColor())
     }
 
     fun withColorSets(count: Int): Window {
@@ -125,7 +125,7 @@ object WindowFactory {
             }
         }
 
-        return Window(dice)
+        return Window(dice, Color.YELLOW)
     }
 
     fun withValueSets(count: Int): Window {
@@ -148,6 +148,6 @@ object WindowFactory {
             }
         }
 
-        return Window(dice)
+        return Window(dice, DiceFactory.getRandomColor())
     }
 }

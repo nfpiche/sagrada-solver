@@ -1,13 +1,8 @@
-class Window(private val dice: List<List<Die>>) {
+class Window(private val dice: List<List<Die>>, private val targetColor: Color) {
+    fun solve(objectives: List<PublicObjective>): Int = objectives.sumBy { it.solve(this) } + valuesForColor(targetColor)
     fun rows(): List<List<Die>> = dice
     fun columns(): List<List<Die>> {
-        val cols: List<ArrayList<Die>> = mutableListOf(
-                arrayListOf(),
-                arrayListOf(),
-                arrayListOf(),
-                arrayListOf(),
-                arrayListOf()
-        )
+        val cols: List<ArrayList<Die>> = List(5) { arrayListOf<Die>() }
 
         for (y in 0 until 5) {
             for (x in 0 until 4) {

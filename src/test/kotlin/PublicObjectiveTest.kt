@@ -1,3 +1,4 @@
+import factories.DiceFactory
 import factories.WindowFactory
 import io.kotlintest.data.forall
 import io.kotlintest.shouldBe
@@ -155,7 +156,7 @@ class ColorDiagonalsTest : StringSpec({
                 listOf(Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE)),
                 listOf(Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE))
         )
-        val window = Window(dice)
+        val window = Window(dice, DiceFactory.getRandomColor())
 
         ColorDiagonals().solve(window) shouldBe 20
     }
@@ -167,7 +168,7 @@ class ColorDiagonalsTest : StringSpec({
                 listOf(Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE)),
                 listOf(Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE))
         )
-        val window = Window(dice)
+        val window = Window(dice, DiceFactory.getRandomColor())
 
         ColorDiagonals().solve(window) shouldBe 0
     }
@@ -179,7 +180,7 @@ class ColorDiagonalsTest : StringSpec({
                 listOf(Die(Color.YELLOW, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.YELLOW, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE)),
                 listOf(Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE), Die(Color.RED, Face.ONE), Die(Color.BLUE, Face.ONE))
         )
-        val window = Window(dice)
+        val window = Window(dice, DiceFactory.getRandomColor())
 
         ColorDiagonals().solve(window) shouldBe 2
     }

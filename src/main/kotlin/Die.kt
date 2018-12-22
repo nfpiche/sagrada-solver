@@ -16,4 +16,5 @@ enum class Face(val value: Int) {
 
 data class Die(val color: Color, val faceValue: Face) {
     override fun toString(): String = "${color.color} ${faceValue.value}"
+    fun img(): String = "https://console.cloud.google.com/storage/browser/sagrada-solver-images/${color.color}=${faceValue.value}.jpg"
 }

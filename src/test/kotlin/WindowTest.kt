@@ -1,3 +1,4 @@
+import factories.DiceFactory
 import factories.WindowFactory
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
@@ -30,7 +31,7 @@ class WindowTest : StringSpec({
                 Die(Color.BLUE, Face.FOUR),
                 Die(Color.BLUE, Face.FIVE)
         )
-        val knownWindow = Window(listOf(row, row, row, row))
+        val knownWindow = Window(listOf(row, row, row, row), DiceFactory.getRandomColor())
         val expected = mapOf(
                 Face.ONE to 4,
                 Face.TWO to 4,
@@ -50,7 +51,7 @@ class WindowTest : StringSpec({
                 Die(Color.PURPLE, Face.FOUR),
                 Die(Color.YELLOW, Face.ONE)
         )
-        val knownWindow = Window(listOf(row, row, row, row))
+        val knownWindow = Window(listOf(row, row, row, row), DiceFactory.getRandomColor())
         val expected = mapOf(
                 Color.YELLOW to 4,
                 Color.PURPLE to 4,
@@ -69,7 +70,7 @@ class WindowTest : StringSpec({
                 listOf(Die(Color.RED, Face.ONE), Die(Color.RED, Face.TWO), Die(Color.RED, Face.THREE), Die(Color.RED, Face.FOUR), Die(Color.RED, Face.FIVE)),
                 listOf(Die(Color.GREEN, Face.ONE), Die(Color.GREEN, Face.TWO), Die(Color.GREEN, Face.THREE), Die(Color.GREEN, Face.FOUR), Die(Color.GREEN, Face.FIVE))
         )
-        val valueWindow = Window(dice)
+        val valueWindow = Window(dice, DiceFactory.getRandomColor())
 
         valueWindow.valuesForColor(Color.BLUE) shouldBe 15
         valueWindow.valuesForColor(Color.YELLOW) shouldBe 15
