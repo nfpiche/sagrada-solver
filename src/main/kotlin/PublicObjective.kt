@@ -6,7 +6,8 @@ sealed class PublicObjective {
     fun img(): String = "${BaseUrls.cloudinaryUrl}/$name.jpg"
 }
 
-abstract class WindowVariety<T>(private val windowFn: (Window) -> Map<T, Int>, private val checkSize: Int) : PublicObjective() {
+abstract class WindowVariety<T>
+    (private val windowFn: (Window) -> Map<T, Int>, private val checkSize: Int) : PublicObjective() {
     protected abstract val match: List<T>
 
     override fun count(window: Window): Int {
@@ -38,13 +39,13 @@ class RowColorVariety(override val name: String = "row-color-variety") : RowVari
 class ColumnShadeVariety(override val name: String = "column-shade-variety") : ColumnVariety<Face>(Die::faceValue)
 class ColumnColorVariety(override val name: String = "column-color-variety") : ColumnVariety<Color>(Die::color)
 
-abstract class ShadePair(override val match: List<Face>): WindowVariety<Face>({ w -> w.groupByValue() }, 2) {
+abstract class ShadePair(override val match: List<Face>) : WindowVariety<Face>({ w -> w.groupByValue() }, 2) {
     override val points: Int = 2
 }
 
 class LightShades(override val name: String = "light-shades") : ShadePair(listOf(Face.ONE, Face.TWO))
 class MediumShades(override val name: String = "medium-shades") : ShadePair(listOf(Face.THREE, Face.FOUR))
-class DeepShades(override  val name: String = "deep-shades") : ShadePair(listOf(Face.FIVE, Face.SIX))
+class DeepShades(override val name: String = "deep-shades") : ShadePair(listOf(Face.FIVE, Face.SIX))
 
 class ColorVariety : WindowVariety<Color>({ w -> w.groupByColor() }, 5) {
     override val name: String = "color-variety"
@@ -68,7 +69,9 @@ class ColorDiagonals : PublicObjective() {
             for (x in 0..4) {
                 val die = rows[y][x]
                 counts.getOrPut(die.color) { mutableSetOf() }.plus(x to y)
-                window.neighborsFor(x, y, die.color).forEach { counts.getOrPut(it.die.color) { mutableSetOf() }.add(it.position)}
+                window.neighborsFor(x, y, die.color).forEach {
+                    counts.getOrPut(it.die.color) { mutableSetOf() }.add(it.position)
+                }
             }
         }
 

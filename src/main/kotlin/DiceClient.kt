@@ -1,10 +1,15 @@
-import okhttp3.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
 import java.io.File
 import java.util.concurrent.TimeUnit
 
 object DiceClient {
+    private const val timeout: Long = 60000
     private val cli: OkHttpClient = with(OkHttpClient.Builder()) {
-        readTimeout(60000, TimeUnit.MILLISECONDS)
+        readTimeout(timeout, TimeUnit.MILLISECONDS)
         build()
     }
 

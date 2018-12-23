@@ -10,18 +10,17 @@ object DiceBuilder {
                     .parse(json)
 }
 
-data class Dice (
-        val dice: List<List<JsonDie>>
+data class Dice(
+    val dice: List<List<JsonDie>>
 ) {
     fun forWindow(): List<List<Die>> = dice.map { it.map(JsonDie::toDie) }
 }
 
-
 data class JsonDie constructor(
-        @KlaxonFace
-        val pips: Face,
-        @KlaxonColor
-        val color: Color
+    @KlaxonFace
+    val pips: Face,
+    @KlaxonColor
+    val color: Color
 ) {
     fun toDie(): Die = Die(color, pips)
 }
@@ -29,7 +28,7 @@ data class JsonDie constructor(
 @Target(AnnotationTarget.FIELD)
 annotation class KlaxonColor
 
-val convertColor = object: Converter {
+val convertColor = object : Converter {
     override fun canConvert(cls: Class<*>): Boolean = cls == Color::class.java
 
     override fun toJson(value: Any) = """{}"""
@@ -41,6 +40,7 @@ val convertColor = object: Converter {
             "green" -> Color.GREEN
             "yellow" -> Color.YELLOW
             "purple" -> Color.PURPLE
+            "None" -> Color.NONE
             else -> throw IllegalArgumentException("Unknown color: $jv")
         }
     }
@@ -49,19 +49,20 @@ val convertColor = object: Converter {
 @Target(AnnotationTarget.FIELD)
 annotation class KlaxonFace
 
-val convertFace = object: Converter {
+val convertFace = object : Converter {
     override fun canConvert(cls: Class<*>): Boolean = cls == Face::class.java
 
     override fun toJson(value: Any) = """{}"""
 
     override fun fromJson(jv: JsonValue): Face {
         return when (jv.int) {
-            1 -> Face.ONE
-            2 -> Face.TWO
-            3 -> Face.THREE
-            4 -> Face.FOUR
-            5 -> Face.FIVE
-            6 -> Face.SIX
+            Face.EMPTY.value -> Face.EMPTY
+            Face.ONE.value -> Face.ONE
+            Face.TWO.value -> Face.TWO
+            Face.THREE.value -> Face.THREE
+            Face.FOUR.value -> Face.FOUR
+            Face.FIVE.value -> Face.FIVE
+            Face.SIX.value -> Face.SIX
             else -> throw IllegalArgumentException("Unknown face: $jv")
         }
     }

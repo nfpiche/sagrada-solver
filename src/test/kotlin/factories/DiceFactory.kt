@@ -12,7 +12,7 @@ object DiceFactory {
             values.add(getRandomFace())
         }
 
-        return values.toList().fold(mutableListOf()) {acc, face ->
+        return values.toList().fold(mutableListOf()) { acc, face ->
             val color = getRandomColor()
             acc.add(Die(color, face))
             acc
@@ -26,7 +26,7 @@ object DiceFactory {
             values.add(getRandomColor())
         }
 
-        return values.toList().fold(mutableListOf()) {acc, color ->
+        return values.toList().fold(mutableListOf()) { acc, color ->
             val face = getRandomFace()
             acc.add(Die(color, face))
             acc

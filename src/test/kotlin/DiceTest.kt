@@ -1,7 +1,7 @@
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class DiceTest: StringSpec({
+class DiceTest : StringSpec({
     val json = DiceJson.diceColorOne
     val result = DiceBuilder.build(json)!!
 

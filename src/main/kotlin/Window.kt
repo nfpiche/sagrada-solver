@@ -1,6 +1,9 @@
 class Window(private val dice: List<List<Die>>, private val targetColor: Color) {
-    fun solve(objectives: List<PublicObjective>): Int = objectives.sumBy { it.solve(this) } + valuesForColor(targetColor)
+    fun solve(objectives: List<PublicObjective>): Int =
+        objectives.sumBy { it.solve(this) } + valuesForColor(targetColor)
+
     fun rows(): List<List<Die>> = dice
+
     fun columns(): List<List<Die>> {
         val cols: List<ArrayList<Die>> = List(5) { arrayListOf<Die>() }
 
@@ -15,7 +18,9 @@ class Window(private val dice: List<List<Die>>, private val targetColor: Color) 
     }
 
     fun groupByValue(): Map<Face, Int> = Grouper<Face>().group(dice, Die::faceValue)
+
     fun groupByColor(): Map<Color, Int> = Grouper<Color>().group(dice, Die::color)
+
     fun valuesForColor(color: Color): Int = dice.flatten().sumBy {
         if (it.color == color) it.faceValue.value else 0
     }
@@ -24,8 +29,10 @@ class Window(private val dice: List<List<Die>>, private val targetColor: Color) 
         return listOf(-1 to -1, -1 to 1, 1 to -1, 1 to 1).fold(mutableListOf()) { acc: List<Neighbor>, pair ->
             val xx = x + pair.first
             val yy = y + pair.second
+            val tooLow = xx < 0 || yy < 0
+            val tooHigh = xx > 4 || yy > 3
 
-            if (xx < 0 || yy < 0 || xx > 4 || yy > 3) {
+            if (tooLow || tooHigh) {
                 acc
             } else {
                 val die = dice[yy][xx]

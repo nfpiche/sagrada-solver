@@ -1,4 +1,5 @@
-enum class Color(val color: String ) {
+enum class Color(val color: String) {
+    NONE("none"),
     BLUE("blue"),
     GREEN("green"),
     PURPLE("purple"),
@@ -6,6 +7,7 @@ enum class Color(val color: String ) {
     YELLOW("yellow")
 }
 enum class Face(val value: Int) {
+    EMPTY(0),
     ONE(1),
     TWO(2),
     THREE(3),
