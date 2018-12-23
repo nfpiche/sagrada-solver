@@ -3,17 +3,14 @@ sealed class PublicObjective {
     abstract val name: String
     protected abstract fun count(window: Window): Int
     fun solve(window: Window): Int = count(window) * points
-    fun img(): String =
-            "https://console.cloud.google.com/storage/browser/sagrada-solver-images/$name.jpg"
+    fun img(): String = "${BaseUrls.cloudinaryUrl}/$name.jpg"
 }
 
 abstract class WindowVariety<T>(private val windowFn: (Window) -> Map<T, Int>, private val checkSize: Int) : PublicObjective() {
     protected abstract val match: List<T>
 
     override fun count(window: Window): Int {
-        val matches = windowFn(window).filter {
-            match.contains(it.key)
-        }
+        val matches = windowFn(window).filter { match.contains(it.key) }
 
         return if (matches.size == checkSize) {
             matches.minBy { it.value }?.value ?: 0
@@ -33,10 +30,7 @@ abstract class ColumnVariety<T>(override val accessFn: (Die) -> T) : Counter<T>(
 
 abstract class Counter<T>(private val windowFn: (Window) -> List<List<Die>>) : PublicObjective() {
     protected abstract val accessFn: (Die) -> T
-    override fun count(window: Window): Int =
-            windowFn(window).count {
-                it.map { accessFn(it) }.toSet().size == it.size
-            }
+    override fun count(window: Window): Int = windowFn(window).count { it.map { accessFn(it) }.toSet().size == it.size }
 }
 
 class RowShadeVariety(override val name: String = "row-shade-variety") : RowVariety<Face>(Die::faceValue)
@@ -44,7 +38,7 @@ class RowColorVariety(override val name: String = "row-color-variety") : RowVari
 class ColumnShadeVariety(override val name: String = "column-shade-variety") : ColumnVariety<Face>(Die::faceValue)
 class ColumnColorVariety(override val name: String = "column-color-variety") : ColumnVariety<Color>(Die::color)
 
-abstract class ShadePair(override val match: List<Face>): WindowVariety<Face>({ w -> w.groupByValue() }, 2){
+abstract class ShadePair(override val match: List<Face>): WindowVariety<Face>({ w -> w.groupByValue() }, 2) {
     override val points: Int = 2
 }
 

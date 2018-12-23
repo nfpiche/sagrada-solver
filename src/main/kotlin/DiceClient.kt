@@ -3,7 +3,6 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 
 object DiceClient {
-    private val diceUrl: String = System.getenv("DICE_URL")!!
     private val cli: OkHttpClient = with(OkHttpClient.Builder()) {
         readTimeout(60000, TimeUnit.MILLISECONDS)
         build()
@@ -28,7 +27,7 @@ object DiceClient {
 
     private fun makeRequest(body: RequestBody): Request =
             with(Request.Builder()) {
-                url(diceUrl)
+                url(BaseUrls.diceUrl)
                 post(body)
                 addHeader("Content-Type", "multipart/form-data")
                 build()

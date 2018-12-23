@@ -1,9 +1,9 @@
 enum class Color(val color: String ) {
-    BLUE("Blue"),
-    GREEN("Green"),
-    PURPLE("Purple"),
-    RED("Red"),
-    YELLOW("Yellow")
+    BLUE("blue"),
+    GREEN("green"),
+    PURPLE("purple"),
+    RED("red"),
+    YELLOW("yellow")
 }
 enum class Face(val value: Int) {
     ONE(1),
@@ -15,6 +15,6 @@ enum class Face(val value: Int) {
 }
 
 data class Die(val color: Color, val faceValue: Face) {
-    override fun toString(): String = "${color.color} ${faceValue.value}"
-    fun img(): String = "https://console.cloud.google.com/storage/browser/sagrada-solver-images/${color.color}=${faceValue.value}.jpg"
+    override fun toString(): String = "${color.color}-${faceValue.value}"
+    fun img(): String = "${BaseUrls.cloudinaryUrl}/${toString()}.jpg"
 }
